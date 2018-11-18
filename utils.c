@@ -1,3 +1,5 @@
+#include "utils.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -83,3 +85,54 @@ char *strrev(char *str)
     return str;
 }
 /*******************************************************************/
+
+char *get_dirName(const char *ofFile) // Strips last part of file path. Doesn't check if file is in fact a folder (so maybe could be improved @TODO)
+{
+    char buf[1024];
+    strcpy(buf, ofFile);
+    strrev(buf);
+
+    int i = 0;
+    for (; buf[i] != '/'; i++)
+        ;
+    i++;
+    char *toReturn;
+
+    if (buf[i] == '\0')
+    {
+        toReturn = malloc(2);
+        sprintf(toReturn, "/");
+        return toReturn;
+    }
+
+    toReturn = malloc(strlen(buf + i) + 1);
+    strcpy(toReturn, buf + i);
+    strrev(toReturn);
+
+    return toReturn;
+}
+
+char *get_fileName(const char *ofFile) // Only keep the last field of a path
+{
+    char buf[1024];
+    strcpy(buf, ofFile);
+    strrev(buf);
+
+    char *cursor = strchr(buf, '/');
+    char *toReturn = NULL;
+
+    if (cursor == buf)
+    {
+        toReturn = malloc(1);
+        *toReturn = '\0';
+        return toReturn;
+    }
+
+    *cursor = '\0';
+
+    toReturn = malloc(strlen(buf) + 1);
+    strcpy(toReturn, buf);
+    strrev(toReturn);
+
+    return toReturn;
+}

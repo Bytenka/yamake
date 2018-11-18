@@ -12,7 +12,7 @@ struct FileListing
     int nb_headerFiles;
 };
 
-struct FileListing fl_create();
+struct FileListing *fl_create();
 void fl_destroy(struct FileListing *fl);
 
 void fl_addSource(struct FileListing *fl, const char *file);

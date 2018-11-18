@@ -3,12 +3,18 @@
 
 struct MetaFile
 {
-    char *codeFileName;
+    char *filePath;       // Full path to file
+    char *fileFolderPath; // Full path to containing folder
+    char *fileName;       // File name
+    char *objName;        // file.o
+
     char **dependencies;
     int nb_dependencies;
+
+    int needsCompilation;
 };
 
-struct MetaFile mf_create(const char *codeFile);
+struct MetaFile *mf_create(const char *fileFullPath);
 void mf_destroy(struct MetaFile *mf);
 
 int mf_hasDependency(struct MetaFile *mf, const char *file);

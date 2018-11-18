@@ -4,9 +4,18 @@
 #include <string.h>
 #include <stdio.h>
 
-struct FileListing fl_create()
+struct FileListing *fl_create()
 {
-    struct FileListing toReturn = {NULL, NULL, NULL, 0, 0, 0};
+    struct FileListing *toReturn = malloc(sizeof(struct FileListing));
+
+    toReturn->sourceFiles = malloc(0);
+    toReturn->codeFiles = malloc(0);
+    toReturn->headerFiles = malloc(0);
+
+    toReturn->nb_sourceFiles = 0;
+    toReturn->nb_headerFiles = 0;
+    toReturn->nb_codeFiles = 0;
+
     return toReturn;
 }
 
@@ -29,17 +38,13 @@ void fl_destroy(struct FileListing *fl)
         free(fl->headerFiles[i]);
     }
     free(fl->headerFiles);
+
+    free(fl);
 }
 
 void fl_addSource(struct FileListing *fl, const char *file)
 {
-    if (fl->sourceFiles == NULL)
-    {
-        fl->sourceFiles = malloc(sizeof(char *));
-        ++fl->nb_sourceFiles;
-    }
-    else
-        fl->sourceFiles = realloc(fl->sourceFiles, (++fl->nb_sourceFiles) * sizeof(char *));
+    fl->sourceFiles = realloc(fl->sourceFiles, (++fl->nb_sourceFiles) * sizeof(char *));
 
     char *toAdd = malloc(strlen(file) + 1);
     strcpy(toAdd, file);
@@ -48,13 +53,7 @@ void fl_addSource(struct FileListing *fl, const char *file)
 
 void fl_addCode(struct FileListing *fl, const char *file)
 {
-    if (fl->codeFiles == NULL)
-    {
-        fl->codeFiles = malloc(sizeof(char *));
-        ++fl->nb_codeFiles;
-    }
-    else
-        fl->codeFiles = realloc(fl->codeFiles, (++fl->nb_codeFiles) * sizeof(char *));
+    fl->codeFiles = realloc(fl->codeFiles, (++fl->nb_codeFiles) * sizeof(char *));
 
     char *toAdd = malloc(strlen(file) + 1);
     strcpy(toAdd, file);
@@ -63,13 +62,7 @@ void fl_addCode(struct FileListing *fl, const char *file)
 
 void fl_addHeader(struct FileListing *fl, const char *file)
 {
-    if (fl->headerFiles == NULL)
-    {
-        fl->headerFiles = malloc(sizeof(char *));
-        ++fl->nb_headerFiles;
-    }
-    else
-        fl->headerFiles = realloc(fl->headerFiles, (++fl->nb_headerFiles) * sizeof(char *));
+    fl->headerFiles = realloc(fl->headerFiles, (++fl->nb_headerFiles) * sizeof(char *));
 
     char *toAdd = malloc(strlen(file) + 1);
     strcpy(toAdd, file);

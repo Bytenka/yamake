@@ -92,6 +92,9 @@ int main(int argc, char *argv[])
                 buildDir = set_build_dir(argv[++i]);
             }
         }
+        else if (strcmp(argv[i], "-a") == 0 || strcmp(argv[i], "--build-args") == 0)
+        {
+        }
         else
         {
             printf("Unknown argument: %s\n", argv[i]);
@@ -114,7 +117,7 @@ int main(int argc, char *argv[])
     printf("Found [%d] files in directory and sub.\n\n", count);
     //---------------------------//
 
-    process_files(data);
+    process_files(data, buildDir);
     free(data);
 
     free(sourcesDir);
